@@ -3,7 +3,7 @@ const app = express()
 const port = 3000
 const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
-const restaurantList = require('./restaurant.json').results
+const RestaurantList = require('./models/Restaurant')
 
 mongoose.connect(process.env.MONGODB_URI)
 
@@ -21,31 +21,52 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
 app.use(express.static('public'))
+app.use(express.urlencoded({ extended: true }))
 
 
-//首頁路由
 app.get('/', (req, res) => {
-  res.render('index', { restaurantList })
+  RestaurantList.find()
+    .lean()
+    .then(restaurant => res.render('index', { restaurant }))
+    .catch(error => console.error(error))
 })
 
-//頁面動態路由
+//新增餐廳頁面
+app.get('/restaurants/new', (req, res) => {
+  res.render('new')
+})
+
+app.post('/restaurants', (req, res) => {
+  RestaurantList.create(req.body)
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+
+//查看特定餐廳
 app.get('/restaurants/:restaurant_id', (req, res) => {
   const { restaurant_id } = req.params
-  const restaurantsList = restaurantList.find(data => data.id === Number(restaurant_id)
-  )
-  res.render('show', { restaurantsList })
+  RestaurantList.findById(restaurant_id)
+    .lean()
+    .then((restaurant) => res.render('show', { restaurant}))
+    .catch((error) => console.log(error))
 })
 
 
 //搜尋功能
 app.get('/search', (req, res) => {
   const keywords = req.query.keywords.trim().toLowerCase()
-  const filterRestaurants = restaurantList.filter(data => {
-    const keyName = data.name.toLowerCase().includes(keywords)
-    const keyCategory = data.category.includes(keywords)
-    return (keyName || keyCategory)
-  })
-  res.render('index', { restaurantList: filterRestaurants, keywords: keywords})
+  RestaurantList.find({})
+    .lean()
+    .then(restaurant=> {
+      const filterRestaurantsData = restaurant.filter(
+        data =>
+          data.name.toLowerCase().includes(keywords) ||
+          data.category.includes(keywords)
+      )
+      res.render("index", { restaurant: filterRestaurantsData, keywords:keywords })
+    })
+    .catch(err => console.log(err))
+
 })
 
 app.listen(port, () => {
