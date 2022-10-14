@@ -40,6 +40,12 @@
   </div>
 </div>
 <div class="text-center">
+  <a href="/restaurants/{{ restaurant._id}}/edit">
+    <button type="button" class="btn btn-warning">
+      修改餐廳
+    </button>
+  </a>
+  <form action="/restaurants/{{ restaurant._id }}/delete" method="POST" style="display: inline"><button type="submit" class="btn btn-danger">刪除餐廳</button></form>
   <a href="/">
     <button type="button" class="btn btn-outline-secondary">
       返回首頁
