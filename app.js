@@ -44,10 +44,10 @@ app.post('/restaurants', (req, res) => {
 
 //查看特定餐廳
 app.get('/restaurants/:restaurant_id', (req, res) => {
-  const { restaurant_id } = req.params
-  RestaurantList.findById(restaurant_id)
+  const id = req.params.restaurant_id
+  RestaurantList.findById(id)
     .lean()
-    .then((restaurant) => res.render('show', { restaurant}))
+    .then((restaurants) => res.render('show', { restaurants }))
     .catch((error) => console.log(error))
 })
 
@@ -63,7 +63,7 @@ app.get('/search', (req, res) => {
           data.name.toLowerCase().includes(keywords) ||
           data.category.includes(keywords)
       )
-      res.render("index", { restaurant: filterRestaurantsData, keywords:keywords })
+      res.render('index', { restaurant: filterRestaurantsData, keywords:keywords })
     })
     .catch(err => console.log(err))
 

@@ -26,7 +26,6 @@
   <div class="row" >
     {{#each restaurant}}
     <div class="col-12 col-sm-6 col-md-4">
-      <a href="/restaurants/{{this.id}}" class="text-secondary">
         <div class="card mb-3">
           <img class="card-img-top" src="{{this.image}}" alt="{{this.name}}">
           <div class="card-body p-3">
@@ -41,11 +40,17 @@
               {{this.rating}}
               <i class="fas fa-star fa-xs"></i>
             </span>
-
-
+            </div>
+          <div class="card-footer d-flex justify-content-end flex-wrap">
+            <a href="/restaurants/{{this._id}}/edit" class="btn btn-link btn-sm"> Edit</a>
+            <a href="/restaurants/{{this._id}}" class="btn btn-link btn-sm"> Detail</a>
+            <form action="/restaurants/{{this._id}}/delete" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
           </div>
+
         </div>
-      </a>
+
     </div>
     {{/each}}
   </div>
