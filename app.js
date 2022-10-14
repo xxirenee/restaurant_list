@@ -1,6 +1,4 @@
 const express = require('express')
-const app = express()
-const port = 3000
 const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
 const RestaurantList = require('./models/Restaurant')
@@ -17,6 +15,9 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
+const app = express()
+const port = 3000
+
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
@@ -29,6 +30,22 @@ app.get('/', (req, res) => {
     .lean()
     .then(restaurant => res.render('index', { restaurant }))
     .catch(error => console.error(error))
+})
+
+//搜尋功能
+app.get('/search', (req, res) => {
+  const keywords = req.query.keywords.trim().toLowerCase()
+  RestaurantList.find({})
+    .lean()
+    .then(restaurant => {
+      const filterRestaurantsData = restaurant.filter(
+        data =>
+          data.name.toLowerCase().includes(keywords) ||
+          data.category.includes(keywords)
+      )
+      res.render('index', { restaurant: filterRestaurantsData, keywords: keywords })
+    })
+    .catch(err => console.log(err))
 })
 
 //新增餐廳頁面
@@ -47,27 +64,27 @@ app.get('/restaurants/:restaurant_id', (req, res) => {
   const id = req.params.restaurant_id
   RestaurantList.findById(id)
     .lean()
-    .then((restaurants) => res.render('show', { restaurants }))
+    .then((restaurant) => res.render('show', { restaurant }))
+    .catch((error) => console.log(error))
+})
+//修改餐廳
+app.get('/restaurants/:restaurant_id/edit', (req, res) => {
+  const id = req.params.restaurant_id
+  RestaurantList.findById(id)
+    .lean()
+    .then((restaurant) => res.render('edit', { restaurant }))
     .catch((error) => console.log(error))
 })
 
-
-//搜尋功能
-app.get('/search', (req, res) => {
-  const keywords = req.query.keywords.trim().toLowerCase()
-  RestaurantList.find({})
+app.post('/restaurants/:restaurant_id/edit', (req, res) => {
+  const id = req.params.restaurant_id
+  return RestaurantList.findByIdAndUpdate(id, req.body)
     .lean()
-    .then(restaurant=> {
-      const filterRestaurantsData = restaurant.filter(
-        data =>
-          data.name.toLowerCase().includes(keywords) ||
-          data.category.includes(keywords)
-      )
-      res.render('index', { restaurant: filterRestaurantsData, keywords:keywords })
-    })
-    .catch(err => console.log(err))
-
+    .then(() => res.redirect(`/restaurants/${id}`))
+    .catch(error => console.log(error))
 })
+
+
 
 app.listen(port, () => {
   console.log(`Express is listening on localhost:${port}`)
