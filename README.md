@@ -1,5 +1,5 @@
 # 我的餐廳清單
-![This is an image](https://github.com/xxirenee/restaurant_list/blob/main/public/image/2-3%20A7.PNG)
+![This is an image](https://github.com/xxirenee/restaurant_list/blob/main/public/image/Cover3.PNG)
 
 ## 介紹
 提供簡易的口袋餐廳清單，可以瀏覽餐廳列表、查詢餐廳和詳細資訊，也可以新增、編輯和修改喜愛的餐廳。
@@ -11,6 +11,7 @@
 - 以餐廳類別搜尋
 - 連結餐廳地址至Google地圖
 - 使用者可以新增、修改、刪除餐廳
+- 餐廳搜尋結果可依名字、類型、地區等排序顯示
 
 ## 開始使用
 1.請先安裝 node.js 與 npm
