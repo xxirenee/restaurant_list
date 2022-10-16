@@ -4,7 +4,7 @@
     <div class="search-bar-inner">
       <form action="/search">
         <h4 class="mb-2">尋找餐廳：</h4>
-        <div class="d-flex flex-column flex-sm-row align-items-sm-center">
+        <div class="d-flex flex-column flex-row align-items-sm-center">
           <div class="input-group">
             <input type="text" name="keywords" class="form-control" placeholder="輸入想找的餐廳、分類..."
               aria-label="Restaurant Name..." value="{{ keywords }}" aria-describedby="search-button">
@@ -12,13 +12,24 @@
               <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
             </div>
           </div>
-          <div class="input-group">
-            <select class="form-select" id="sort" name="sort">
-                <option>A > Z</option>
-                <option>Z > A</option>
-                <option>類別</option>
-                <option>地區</option>
-            </select>
+          <div class="input-group justify-content-end">
+
+              <div id="sortSelector">
+                <div class="dropdown">
+                  <a class="btn btn-outline-danger dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Sort{{#if title}}({{title}}){{/if}}
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="/search?keywords={{ keywords }}&sort=name&order=asc&title=A->Z">A to Z</a></li>
+                    <li><a class="dropdown-item" href="/search?keywords={{ keywords }}&sort=name&order=desc&title=Z->A">Z to A</a></li>
+                    <li><a class="dropdown-item" href="/search?keywords={{ keywords }}&sort=category&order=asc&title=類別">類別</a></li>
+                    <li><a class="dropdown-item" href="/search?keywords={{ keywords }}&sort=location&order=asc&title=地區">地區</a></li>
+                  </ul>
+                </div>
+              </div>
+
+
           </div>
         </div>
       </form>
