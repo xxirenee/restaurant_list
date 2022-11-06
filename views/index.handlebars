@@ -7,7 +7,7 @@
         <div class="d-flex flex-column flex-row align-items-sm-center">
           <div class="input-group">
             <input type="text" name="keywords" class="form-control" placeholder="輸入想找的餐廳、分類..."
-              aria-label="Restaurant Name..." value="{{ keywords }}" aria-describedby="search-button" required>
+              aria-label="Restaurant Name..." value="{{ keywords }}" aria-describedby="search-button">
             <div class="input-group-append">
               <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
             </div>
@@ -32,16 +32,18 @@
 
 
           </div>
-        </div>
       </form>
 
     </div>
   </div>
 </div>
-<div class="text-center">
+<div class="mt-2">
+  <div class="text-end">
   <a href="/restaurants/new">
     <button class="btn btn-success">新增餐廳</button>
   </a>
+  </div>
+</div>
 
 </div>
 <!-- restaurant list -->
