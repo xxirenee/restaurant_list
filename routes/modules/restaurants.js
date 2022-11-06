@@ -38,7 +38,7 @@ router.put('/:id', (req, res) => {
   const _id = req.params.id
 
   return RestaurantList.findOneAndUpdate({_id, userId}, req.body)
-    .then(() => res.redirect(`/restaurants/${id}`))
+    .then(() => res.redirect(`/restaurants/${_id}`))
     .catch(error => console.log(error))
 })
 //刪除餐廳
