@@ -8,40 +8,44 @@ router.get('/new', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-  RestaurantList.create(req.body)
+  const userId = req.user._id
+  RestaurantList.create({...req.body, userId})
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
 
 //查看特定餐廳
-router.get('/:restaurant_id', (req, res) => {
-  const id = req.params.restaurant_id
-  RestaurantList.findById(id)
+router.get('/:id', (req, res) => {
+  const userId = req.user._id
+  const _id = req.params.id
+  RestaurantList.findOne({_id, userId})
     .lean()
     .then((restaurant) => res.render('show', { restaurant }))
     .catch((error) => console.log(error))
 })
 //修改餐廳
-router.get('/:restaurant_id/edit', (req, res) => {
-  const id = req.params.restaurant_id
-  RestaurantList.findById(id)
+router.get('/:id/edit', (req, res) => {
+  const userId = req.user._id
+  const _id = req.params.id
+  RestaurantList.findOne({_id, userId})
     .lean()
     .then((restaurant) => res.render('edit', { restaurant }))
     .catch((error) => console.log(error))
 })
 
-router.put('/:restaurant_id', (req, res) => {
-  const id = req.params.restaurant_id
-  return RestaurantList.findByIdAndUpdate(id, req.body)
-    .lean()
+router.put('/:id', (req, res) => {
+  const userId = req.user._id
+  const _id = req.params.id
+
+  return RestaurantList.findOneAndUpdate({_id, userId}, req.body)
     .then(() => res.redirect(`/restaurants/${id}`))
     .catch(error => console.log(error))
 })
 //刪除餐廳
-router.delete('/:restaurant_id', (req, res) => {
-  const id = req.params.restaurant_id
-  return RestaurantList.findById(id)
-    .then(restaurant => restaurant.remove())
+router.delete('/:id', (req, res) => {
+  const userId = req.user._id
+  const _id = req.params.id
+  return RestaurantList.findOneAndDelete({_id, userId})
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })

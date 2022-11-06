@@ -3,7 +3,8 @@ const router = express.Router()
 const RestaurantList = require('../../models/Restaurant')
 
 router.get('/', (req, res) => {
-  RestaurantList.find()
+  const userId = req.user._id
+  RestaurantList.find({userId})
     .lean()
     .then(restaurant => res.render('index', { restaurant }))
     .catch(error => console.error(error))
