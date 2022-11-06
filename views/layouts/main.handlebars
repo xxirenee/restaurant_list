@@ -20,11 +20,16 @@
           <a class="navbar-brand" href="/">
             <img src="https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/6227/restaurant-list-logo.png"
               width="30" height="30" class="d-inline-block align-top" alt="我的餐廳清單">
-            我的口袋餐廳名單
+            {{#if isAuthenticated}}{{ user.name}}'s {{/if}}
+            口袋餐廳名單
           </a>
+          {{#if isAuthenticated}}
           <div>
-            <a href="./restaurants/new" class="btn btn-outline-info" style="text:right">新增餐廳</a>
+              <a href="/users/logout" class="btn btn-outline-info">Logout</a>
+              {{else}}
+              <a href="/users/login" class="btn btn-outline-info">Login</a>
           </div>
+          {{/if}}
         </div>
     </nav>
     <div class="banner"></div>
