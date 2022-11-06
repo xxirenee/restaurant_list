@@ -12,11 +12,11 @@ router.get('/', (req, res) => {
 
 //搜尋功能
 router.get('/search', (req, res) => {
-
+  const userId = req.user._id
   const { keywords, sort, order, title } = req.query
-  RestaurantList.find({})
-    .sort({ [sort]: order })
+  RestaurantList.find({userId})
     .lean()
+    .sort({ [sort]: order })
     .then(restaurant => {
       const filterRestaurantsData = restaurant.filter(
         data =>
